@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: #EEF0E8;
+    color: #2C3A30;
+    font-family: 'Garet', 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Subtle paper / noise texture over entire page */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-crimson), Georgia, serif;
+  }
+
+  :target { scroll-margin-top: 56px; }
+}
+
+@layer components {
+  /* Shared eyebrow label style */
+  .eyebrow {
+    font-family: 'Garet', 'DM Sans', system-ui, sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #6A8B68;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: #6A8B68;
+    flex-shrink: 0;
+  }
+
+  /* Flat button base */
+  .btn {
+    display: inline-block;
+    padding: 0.875rem 2.25rem;
+    font-family: 'Garet', 'DM Sans', system-ui, sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 2px;
+    transition: background 0.22s ease, transform 0.18s ease;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: #486858;
+    color: #EEF0E8;
+  }
+  .btn-primary:hover {
+    background: #2F4A3A;
+    transform: translateY(-1px);
+  }
+  .btn-clay {
+    background: #B07A5F;
+    color: #FAFAF8;
+  }
+  .btn-clay:hover {
+    background: #9A6A50;
+  }
+  .btn-outline {
+    background: transparent;
+    color: #486858;
+    border: 1px solid #486858;
+  }
+  .btn-outline:hover {
+    background: #486858;
+    color: #EEF0E8;
+  }
+
+  /* Footer nav link hover */
+  .footer-nav-link:hover {
+    color: rgba(255,255,255,0.85) !important;
+  }
+
+  /* Shared divider line */
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: #7A9B7C;
+    margin: 1.5rem 0 2rem;
+  }
+}

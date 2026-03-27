@@ -1,0 +1,40 @@
+import { revalidateTag } from 'next/cache'
+import { type NextRequest, NextResponse } from 'next/server'
+import { parseBody } from 'next-sanity/webhook'
+
+/**
+ * Sanity webhook endpoint — triggers on-demand revalidation when Abby saves
+ * changes in the Studio. Set this URL as a webhook in your Sanity project:
+ *   https://your-domain.vercel.app/api/revalidate
+ */
+export async function POST(req: NextRequest) {
+  try {
+    const { isValidSignature, body } = await parseBody<{ _type?: string }>(
+      req,
+      process.env.SANITY_WEBHOOK_SECRET,
+    )
+
+    if (!isValidSignature) {
+      return NextResponse.json({ message: 'Invalid signature' }, { status: 401 })
+    }
+
+    if (!body?._type) {
+      return NextResponse.json({ message: 'Bad request' }, { status: 400 })
+    }
+
+    revalidateTag(body._type, 'force')
+
+    return NextResponse.json({
+      status: 200,
+      revalidated: true,
+      now: Date.now(),
+      body,
+    })
+  } catch (err: unknown) {
+    console.error(err)
+    return NextResponse.json(
+      { message: err instanceof Error ? err.message : 'Unknown error' },
+      { status: 500 },
+    )
+  }
+}
